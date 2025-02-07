@@ -65,7 +65,7 @@ public class ApiV1MemberController {
     @GetMapping("/me")
     public RsData<MemberDto> me() {
 
-        Member actor = rq.getAuthenticateActor();
+        Member actor = rq.getActor();
 
         return new RsData<>(
                 "200-1",
