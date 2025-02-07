@@ -298,7 +298,7 @@ public class ApiV1PostControllerTest {
 
     @Test
     @DisplayName("글 작성")
-    @WithUserDetails("user")
+    @WithUserDetails("user1")
     void write1() throws Exception {
 
         String apiKey = "user1";
