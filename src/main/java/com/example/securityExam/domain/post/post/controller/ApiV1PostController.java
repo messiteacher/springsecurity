@@ -13,11 +13,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 
 @RestController
@@ -89,15 +88,14 @@ public class ApiV1PostController {
 
     @PostMapping
     @Transactional
-    public RsData<PostWithContentDto> write(@RequestBody @Valid WriteReqBody reqBody) {
-
-        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+    public RsData<PostWithContentDto> write(@RequestBody @Valid WriteReqBody reqBody,
+                                            @AuthenticationPrincipal UserDetails principal) {
 
         if (principal == null) {
             throw new ServiceException("401-1", "로그인이 필요합니다.");
         }
 
-        String username = principal.getName();
+        String username = principal.getUsername();
         Member actor = memberService.findByUsername(username).get();
 
 //        Member actor = rq.getAuthenticateActor();

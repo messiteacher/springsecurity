@@ -5,9 +5,14 @@ import com.example.securityExam.domain.member.member.service.MemberService;
 import com.example.securityExam.global.exception.ServiceException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -30,5 +35,14 @@ public class Rq {
         }
 
         return opActor.get();
+    }
+
+    public void setLogin(String username) {
+
+        UserDetails user = new User(username, "", List.of());
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities())
+        );
     }
 }
